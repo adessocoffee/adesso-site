@@ -1,0 +1,228 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Adesso Spirits + Espresso//Live Music//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Adesso Live Music
+X-WR-TIMEZONE:America/New_York
+BEGIN:VEVENT
+UID:2026-07-24-daglio@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260724T180000
+DTEND;TZID=America/New_York:20260724T210000
+SUMMARY:Daglio - Rock en Español
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Rock en Español at Adesso Spirits + Espresso. Friday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-07-25-carola@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260725T180000
+DTEND;TZID=America/New_York:20260725T210000
+SUMMARY:Carola - Latin Music & Karaoke
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Latin Music & Karaoke at Adesso Spirits + Espresso. Saturday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-07-31-mary-kandela@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260731T180000
+DTEND;TZID=America/New_York:20260731T210000
+SUMMARY:Mary Kandela - Live Latin Music
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Live Latin Music at Adesso Spirits + Espresso. Friday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-08-01-paola-sciaraffia@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260801T180000
+DTEND;TZID=America/New_York:20260801T210000
+SUMMARY:Paola Sciaraffia - Live Latin Music
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Live Latin Music at Adesso Spirits + Espresso. Saturday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-08-07-daglio@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260807T180000
+DTEND;TZID=America/New_York:20260807T210000
+SUMMARY:Daglio - Rock en Español
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Rock en Español at Adesso Spirits + Espresso. Friday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-08-08-ben-dearie@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260808T180000
+DTEND;TZID=America/New_York:20260808T210000
+SUMMARY:Ben Dearie - Acoustic Rock
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Acoustic Rock at Adesso Spirits + Espresso. Saturday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-08-14-daglio@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260814T180000
+DTEND;TZID=America/New_York:20260814T210000
+SUMMARY:Daglio - Rock en Español
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Rock en Español at Adesso Spirits + Espresso. Friday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-08-15-carola@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260815T180000
+DTEND;TZID=America/New_York:20260815T210000
+SUMMARY:Carola - Latin Music & Karaoke
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Latin Music & Karaoke at Adesso Spirits + Espresso. Saturday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-08-21-damon-mitchell@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260821T180000
+DTEND;TZID=America/New_York:20260821T210000
+SUMMARY:Damon Mitchell - Live Acoustic Rock
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Live Acoustic Rock at Adesso Spirits + Espresso. Friday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-08-22-mary-kandela@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260822T180000
+DTEND;TZID=America/New_York:20260822T210000
+SUMMARY:Mary Kandela - Live Latin Music
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Live Latin Music at Adesso Spirits + Espresso. Saturday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-08-28-ellee-lovilla@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260828T180000
+DTEND;TZID=America/New_York:20260828T210000
+SUMMARY:Ellee Lovilla - Acoustic Rock & Original Music
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Acoustic Rock & Original Music at Adesso Spirits + Espresso. Friday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-08-29-ben-dearie@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260829T180000
+DTEND;TZID=America/New_York:20260829T210000
+SUMMARY:Ben Dearie - Acoustic Rock
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Acoustic Rock at Adesso Spirits + Espresso. Saturday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-04-ben-dearie@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260904T180000
+DTEND;TZID=America/New_York:20260904T210000
+SUMMARY:Ben Dearie - Acoustic Rock
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Acoustic Rock at Adesso Spirits + Espresso. Friday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-05-mary-kandela@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260905T180000
+DTEND;TZID=America/New_York:20260905T210000
+SUMMARY:Mary Kandela - Live Latin Music
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Live Latin Music at Adesso Spirits + Espresso. Saturday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-11-daglio@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260911T180000
+DTEND;TZID=America/New_York:20260911T210000
+SUMMARY:Daglio - Rock en Español
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Rock en Español at Adesso Spirits + Espresso. Friday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-12-carola@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260912T180000
+DTEND;TZID=America/New_York:20260912T210000
+SUMMARY:Carola - Latin Music & Karaoke
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Latin Music & Karaoke at Adesso Spirits + Espresso. Saturday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-18-ellee-lovilla@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260918T180000
+DTEND;TZID=America/New_York:20260918T210000
+SUMMARY:Ellee Lovilla - Acoustic Rock & Original Music
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Acoustic Rock & Original Music at Adesso Spirits + Espresso. Friday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-19-paola-sciaraffia@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260919T180000
+DTEND;TZID=America/New_York:20260919T210000
+SUMMARY:Paola Sciaraffia - Live Latin Music
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Live Latin Music at Adesso Spirits + Espresso. Saturday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-25-ben-dearie@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260925T180000
+DTEND;TZID=America/New_York:20260925T210000
+SUMMARY:Ben Dearie - Acoustic Rock
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Acoustic Rock at Adesso Spirits + Espresso. Friday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-26-daglio@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20260926T180000
+DTEND;TZID=America/New_York:20260926T210000
+SUMMARY:Daglio - Rock en Español
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Rock en Español at Adesso Spirits + Espresso. Saturday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-10-carola@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20261010T180000
+DTEND;TZID=America/New_York:20261010T210000
+SUMMARY:Carola - Latin Music & Karaoke
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Latin Music & Karaoke at Adesso Spirits + Espresso. Saturday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-24-damon-mitchell@adesso-site.pages.dev
+DTSTAMP:20260722T131441Z
+DTSTART;TZID=America/New_York:20261024T180000
+DTEND;TZID=America/New_York:20261024T210000
+SUMMARY:Damon Mitchell - Live Acoustic Rock
+LOCATION:Adesso Spirits + Espresso\, 125 E Main St\, Mason\, OH 45040
+DESCRIPTION:Live Acoustic Rock at Adesso Spirits + Espresso. Saturday 6 to 9pm. Free to attend.
+URL:https://adesso-site.pages.dev/#events
+END:VEVENT
+END:VCALENDAR
