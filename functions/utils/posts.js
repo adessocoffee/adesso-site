@@ -5,7 +5,7 @@
 // real-time source of truth: a human /live page, a machine RSS feed, and JSON-LD.
 // Reads the live sources each request (edge-cached ~2 min); no deploy when things
 // change. Point a different site at a different account with POSTS_SOURCE.
-import { getEvents } from "./events.js";
+import { getEvents, buildListHtml } from "./events.js";
 
 const SOURCE_DEFAULT =
   "https://chowdownos.onrender.com/p/adesso-spirits-espresso/feed.json";
@@ -18,7 +18,7 @@ export const VENUE = {
 };
 const FEED_ICON = SITE + "/assets/feed-icon.png";
 const EVENT_IMAGE = SITE + "/assets/hero-poster.webp";
-const ACCENT = "c9a84c";
+const ACCENT = "b23a2e";
 const MON = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
 const he = (s) => (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -131,122 +131,189 @@ export function buildUpdatesRss(events, posts) {
     items + "\n</channel></rss>\n";
 }
 
-// --- human-readable /live page ----------------------------------------------
+// --- human-readable /live page (redesign: 70s vintage bone + brand red) ------
 const PAGE_CSS = `
-:root{--cream:#f5f0e8;--warm-black:#0d0905;--gold:#c9a84c;--gold-light:#e8c97a;--muted:#9a8a75;--border:rgba(201,168,76,0.18);--line:rgba(245,240,232,0.07)}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--warm-black);color:var(--cream);font-family:"Jost",system-ui,sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased}
-img{max-width:100%;display:block}a{color:inherit}
-.lv-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.4rem 1.6rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(13,9,5,0.93);backdrop-filter:blur(12px);z-index:5}
-.lv-head .back{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);text-decoration:none;white-space:nowrap}
-.lv-head .back:hover{color:var(--gold)}
-.lv-title{text-align:center}
-.lv-title .eyebrow{display:block;font-size:.55rem;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem}
-.lv-title h1{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-weight:300;font-size:clamp(1.35rem,4.5vw,2rem);color:var(--cream);line-height:1}
-.lv-head .rss{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--border);color:var(--gold);padding:.5rem .75rem;text-decoration:none}
-.lv-head .rss:hover{border-color:var(--gold)}
-.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:.5rem;vertical-align:middle;animation:blink 2.2s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:.35}50%{opacity:1}}
-@media(prefers-reduced-motion:reduce){.live-dot{animation:none}}
-.wrap{max-width:640px;margin:0 auto;padding:2.25rem 1.2rem 4.5rem}
-.pills{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 2rem;justify-content:center}
-.pill{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;font-family:inherit;color:var(--muted);background:none;border:1px solid var(--border);border-radius:999px;padding:.5rem 1rem;cursor:pointer;transition:color .15s,border-color .15s,background .15s}
-.pill:hover{color:var(--gold);border-color:var(--gold-dim,rgba(201,168,76,0.4))}
-.pill.on{color:var(--warm-black);background:var(--gold);border-color:var(--gold)}
-.sec-label{font-size:.56rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.9rem;margin:.5rem 0 1.4rem}
-.sec-label::after{content:"";flex:1;height:1px;background:var(--border)}
-.sec-label.mt{margin-top:3rem}
-.ev{display:grid;grid-template-columns:52px 1fr;gap:1.1rem;padding:1.1rem 0;border-bottom:1px solid var(--line)}
-.ev .mk{text-align:center}
-.ev .mk .m{display:block;font-size:.55rem;letter-spacing:.18em;color:var(--gold)}
-.ev .mk .d{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:1.7rem;line-height:1;color:var(--cream)}
-.ev .en{font-size:1.05rem;color:var(--cream)}
-.ev .ed{font-size:.82rem;color:var(--muted);margin-top:.15rem}
-.update{border:1px solid var(--border);overflow:hidden;margin-bottom:1.75rem;background:rgba(201,168,76,0.03)}
-.u-img img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#171008}
-.u-body{padding:1.5rem 1.6rem}
-.u-body time{display:block;font-size:.56rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem}
-.u-body h2{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-weight:300;font-size:1.5rem;line-height:1.25;color:var(--cream);margin-bottom:.7rem}
-.u-body p{color:#d9cdba;font-size:.97rem;line-height:1.68}
-.u-body p+p{margin-top:.75rem}
-.empty{text-align:center;color:var(--muted);padding:2.5rem 1rem;font-style:italic;font-family:"Cormorant Garamond",Georgia,serif;font-size:1.15rem}
-.lv-foot{text-align:center;font-size:.72rem;color:var(--muted);padding:2rem 1.2rem 3rem;border-top:1px solid var(--line);line-height:1.9}
-.lv-foot a{color:var(--gold);text-decoration:none}
-@media(max-width:520px){.lv-head{padding:1.05rem .95rem}.u-body{padding:1.25rem}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#e7dece;color:#1a1611;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased}
+a{color:#b23a2e;text-decoration:none}a:hover{color:#8f2c22}
+img{max-width:100%;display:block}
+/* brandmark: the wordmark is rotated AFTER layout, so the reset above would cap
+   its pre-rotation width at the 88px rail and squash it. Opt it out. */
+.brandmark{max-width:none !important;width:auto !important;flex:0 0 auto}
+::selection{background:#b23a2e;color:#f2ecdf}
+@keyframes adRec{0%,100%{opacity:1}50%{opacity:.2}}
+@media(prefers-reduced-motion:reduce){[style*="adRec"]{animation:none !important}}
+#events-list{columns:2;column-gap:3.5rem}
+#events-list .event-item{display:grid;grid-template-columns:66px 1fr;gap:1.5rem;padding:1.4rem 0;border-bottom:1px solid rgba(26,22,17,.14);align-items:center;break-inside:avoid}
+#events-list .event-marker{text-align:center}
+#events-list .event-marker .em{display:block;font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:#b23a2e;margin-bottom:.15rem;font-weight:500}
+#events-list .event-marker .glyph{font-size:2rem;font-weight:300;line-height:1;color:#1a1611}
+#events-list .event-name{font-size:1.12rem;font-weight:500;letter-spacing:-.01em;margin-bottom:.2rem}
+#events-list .event-desc{font-size:.76rem;letter-spacing:.03em;color:rgba(26,22,17,.55);text-transform:uppercase}
+.lv-main{margin-left:88px}
+.lv-topbar{display:none}
+.tab{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;font-family:inherit;border:1px solid rgba(26,22,17,.28);border-radius:999px;padding:.55rem 1.2rem;background:transparent;color:#1a1611;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.tab.on{background:#1a1611;color:#f2ecdf;border-color:#1a1611}
+.lv-update{border:1px solid rgba(26,22,17,.16);background:#f3ecdd;overflow:hidden;margin-bottom:1.6rem}
+.lv-update .u-img img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#ded4c2}
+.lv-update .u-body{padding:1.6rem 1.8rem}
+.lv-update time{display:flex;align-items:center;gap:.5rem;font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:#b23a2e;font-weight:600;margin-bottom:.8rem}
+.lv-update h3{font-weight:500;font-size:1.3rem;letter-spacing:-.01em;line-height:1.2;margin-bottom:.6rem}
+.lv-update p{color:rgba(26,22,17,.72);font-size:.95rem;line-height:1.7}
+.lv-update p+p{margin-top:.6rem}
+.lv-empty{border:1px solid rgba(26,22,17,.16);background:#f3ecdd;padding:2.6rem 2rem;text-align:center;font-style:italic;font-size:1.1rem;color:rgba(26,22,17,.5)}
+@media(max-width:820px){
+  .lv-rail{display:none !important}
+  .lv-main{margin-left:0 !important;padding-top:60px}
+  .lv-topbar{display:flex !important}
+  .lv-pad{padding:2.5rem 1.4rem 4rem !important}
+  #events-list{columns:1 !important}
+  .lv-h1{font-size:clamp(2.6rem,13vw,3.6rem) !important}
+}
 `;
 
-function eventsSection(events) {
-  if (!events.length) return "";
-  const rows = events.slice(0, 12).map((e) => {
-    const [, m, d] = e.date.split("-").map(Number);
-    return `<div class="ev" data-cat="event"><div class="mk"><span class="m">${MON[m]}</span><span class="d">${d}</span></div>` +
-      `<div><div class="en">${he(e.artist)}</div><div class="ed">${he(e.day)} &middot; ${he(e.genre)} &middot; 6 to 9pm</div></div></div>`;
-  }).join("\n");
-  return `<div class="secblk" data-sec><div class="sec-label">Coming up</div>${rows}</div>`;
+function catWord(c) {
+  c = (c || "update").toLowerCase();
+  if (c === "special") return "Special";
+  if (c === "feature") return "Feature";
+  return "Update";
 }
-function postsSection(posts) {
-  const inner = !posts.length
-    ? `<p class="empty">No new posts yet. New updates stream in here.</p>`
-    : posts.map((p) => {
-        const cat = (p.category || "update").toLowerCase();
-        const img = p.image ? `<div class="u-img"><img src="${heAttr(p.image)}" alt="" loading="lazy"></div>` : "";
-        const body = "<p>" + he(p.text || "").replace(/\n{2,}/g, "</p><p>").replace(/\n/g, "<br>") + "</p>";
-        return `<article class="update" data-cat="${cat}">${img}<div class="u-body"><time>${he(relTime(p.published))}</time>` +
-          `<h2>${he(p.title || "Update")}</h2>${body}</div></article>`;
-      }).join("\n");
-  return `<div class="secblk" data-sec><div class="sec-label mt">Latest</div>${inner}</div>`;
-}
-const PILLS = [
-  ["all", "All"], ["event", "Events"], ["update", "Updates"], ["special", "Specials"], ["feature", "Features"],
-];
-function pillsBar() {
-  return `<div class="pills">` + PILLS.map(([f, label], i) =>
-    `<button class="pill${i === 0 ? " on" : ""}" data-f="${f}">${label}</button>`).join("") + `</div>`;
-}
-const FILTER_JS = `<script>(function(){
-  var pills=[].slice.call(document.querySelectorAll('.pill'));
-  var empty=document.getElementById('lv-empty');
-  function apply(f){
-    var any=0;
-    [].forEach.call(document.querySelectorAll('[data-cat]'),function(el){
-      var show=(f==='all'||el.getAttribute('data-cat')===f);el.style.display=show?'':'none';if(show)any++;
-    });
-    [].forEach.call(document.querySelectorAll('[data-sec]'),function(sec){
-      var vis=0;[].forEach.call(sec.querySelectorAll('[data-cat]'),function(i){if(i.style.display!=='none')vis++;});
-      sec.style.display=vis?'':'none';
-    });
-    if(empty)empty.style.display=any?'none':'block';
+
+function updatesSection(posts) {
+  if (!posts.length) {
+    return `<div id="updates-list">
+<!--UPDATES_LIST_START-->
+      <div class="lv-empty" data-empty>No updates yet. New updates stream in here.</div>
+<!--UPDATES_LIST_END-->
+    </div>`;
   }
-  pills.forEach(function(p){p.addEventListener('click',function(){
-    pills.forEach(function(x){x.classList.remove('on');});p.classList.add('on');apply(p.getAttribute('data-f'));
-  });});
+  const cards = posts.map((p) => {
+    const cat = (p.category || "update").toLowerCase();
+    const img = p.image ? `<div class="u-img"><img src="${heAttr(p.image)}" alt="" loading="lazy"></div>` : "";
+    const body = "<p>" + he(p.text || "").replace(/\n{2,}/g, "</p><p>").replace(/\n/g, "<br>") + "</p>";
+    const when = relTime(p.published);
+    const meta = [when, catWord(cat)].filter(Boolean).join(" &middot; ");
+    return `<article class="lv-update" data-cat="${cat}">${img}<div class="u-body">` +
+      `<time><span style="width:7px;height:7px;border-radius:50%;background:#b23a2e;display:inline-block;"></span>${he(meta)}</time>` +
+      `<h3>${he(p.title || "Update")}</h3>${body}</div></article>`;
+  }).join("\n");
+  return `<div id="updates-list">
+<!--UPDATES_LIST_START-->
+${cards}
+<!--UPDATES_LIST_END-->
+    <div class="lv-empty" id="latest-empty" style="display:none">No updates yet. New updates stream in here.</div>
+  </div>`;
+}
+
+const TABS = [["all","All"],["events","Events"],["updates","Updates"],["specials","Specials"],["features","Features"]];
+function tabsBar() {
+  return `<div style="display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:3rem;padding-bottom:1.6rem;border-bottom:1px solid rgba(26,22,17,.14);">` +
+    TABS.map(([k, l], i) => `<button class="tab${i === 0 ? " on" : ""}" data-tab="${k}">${l}</button>`).join("") +
+    `</div>`;
+}
+
+const FILTER_JS = `<script>(function(){
+  var tabs=[].slice.call(document.querySelectorAll('.tab'));
+  var coming=document.getElementById('sec-coming');
+  var latest=document.getElementById('sec-latest');
+  var empty=document.getElementById('latest-empty');
+  var CATMAP={updates:'update',specials:'special',features:'feature'};
+  function apply(f){
+    var showComing=(f==='all'||f==='events');
+    var showLatest=(f==='all'||f==='updates'||f==='specials'||f==='features');
+    if(coming)coming.style.display=showComing?'':'none';
+    if(latest)latest.style.display=showLatest?'':'none';
+    var want=CATMAP[f]||null,vis=0;
+    [].forEach.call(document.querySelectorAll('.lv-update'),function(el){
+      var show=(!want||el.getAttribute('data-cat')===want);el.style.display=show?'':'none';if(show)vis++;
+    });
+    if(empty){var word=(f==='specials')?'specials':(f==='features')?'features':'updates';
+      empty.textContent='No '+word+' yet. New '+word+' stream in here.';
+      empty.style.display=(showLatest&&document.querySelectorAll('.lv-update').length&&!vis)?'':'none';}
+    tabs.forEach(function(t){t.classList.toggle('on',t.getAttribute('data-tab')===f);});
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){apply(t.getAttribute('data-tab'));});});
 })();</script>`;
 
 export function buildLivePage(events, posts) {
   const jsonld = buildLiveJsonLd(events, posts);
-  const hasAny = events.length || posts.length;
-  const body = hasAny
-    ? pillsBar() + eventsSection(events) + postsSection(posts) +
-        `<p class="empty" id="lv-empty" style="display:none">Nothing here right now.</p>`
-    : `<p class="empty" style="padding:5rem 1rem">Nothing on right now. Check back soon.</p>`;
+  const eventsHtml = events.length ? buildListHtml(events) :
+    `<div class="lv-empty">No events on the calendar right now.</div>`;
   return `<!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Live at ${he(VENUE.name)}</title>
 <meta name="description" content="Live from ${he(VENUE.name)}: upcoming events, specials, new menu items, and what's on right now.">
 <link rel="canonical" href="${SITE}/live">
-<link rel="icon" href="/assets/feed-icon.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="alternate" type="application/rss+xml" title="Adesso Live" href="${SITE}/updates.xml">
-<link rel="stylesheet" href="/assets/fonts/fonts.css">
 <script type="application/ld+json">${jsonld}</script>
 <style>${PAGE_CSS}</style>
 </head><body>
-<header class="lv-head">
-  <a class="back" href="/">&larr; Adesso</a>
-  <div class="lv-title"><span class="eyebrow"><span class="live-dot"></span>Live at Adesso</span><h1>What&rsquo;s on right now</h1></div>
-  <a class="rss" href="/updates.xml" title="Subscribe (RSS)">RSS</a>
-</header>
-<main class="wrap">${body}</main>
-<footer class="lv-foot">Live operational state, straight from the source.<br><a href="/updates.xml">Subscribe (RSS)</a> &middot; <a href="/">Back to adessospiritsandespresso.com</a></footer>
-${hasAny ? FILTER_JS : ""}
+<div style="position:relative;min-height:100vh;">
+
+<aside class="lv-rail" style="position:fixed;top:0;left:0;bottom:0;width:88px;z-index:150;background:#0e0a06;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:1.8rem 0;overflow:hidden;">
+  <div style="position:absolute;top:50%;left:50%;width:100vh;height:88px;transform:translate(-50%,-50%) rotate(90deg);background-image:url('/assets/floral-border.avif');background-size:auto;background-repeat:repeat;background-position:center;opacity:.5;"></div>
+  <a href="/" aria-label="Adesso home" style="position:relative;z-index:1;flex:0 0 auto;display:flex;align-items:center;justify-content:center;height:230px;overflow:hidden;">
+    <img class="brandmark" src="/assets/wordmark-script.gif" alt="Adesso" style="height:42px;transform:rotate(-90deg);filter:invert(1);">
+  </a>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:.9rem;">
+    <span style="width:13px;height:13px;border-radius:50%;background:#e0723f;animation:adRec 1.4s ease infinite;display:block;"></span>
+    <span style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:1.1rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#f2ecdf;">Live</span>
+  </div>
+  <a href="/" style="position:relative;z-index:1;writing-mode:vertical-rl;transform:rotate(180deg);font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(242,236,223,.6);">&larr; Back to site</a>
+</aside>
+
+<div class="lv-topbar" style="position:fixed;top:0;left:0;right:0;z-index:150;background:#0e0a06;align-items:center;justify-content:space-between;padding:.9rem 1.4rem;height:60px;">
+  <a href="/"><img class="brandmark" src="/assets/wordmark-script.gif" alt="Adesso" style="height:30px;filter:invert(1);"></a>
+  <div style="display:flex;align-items:center;gap:.5rem;">
+    <span style="width:8px;height:8px;border-radius:50%;background:#e0723f;animation:adRec 1.4s ease infinite;display:inline-block;"></span>
+    <span style="font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:#f2ecdf;">Live</span>
+  </div>
+</div>
+
+<main class="lv-main">
+  <div class="lv-pad" style="max-width:1000px;margin:0 auto;padding:5rem 3rem 6rem;">
+
+    <a href="/" style="display:inline-flex;align-items:center;gap:.55rem;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;border:1px solid rgba(26,22,17,.3);border-radius:999px;padding:.72rem 1.4rem;color:#1a1611;margin-bottom:2.4rem;"><span style="font-size:1rem;line-height:1;">&larr;</span> Back to Adesso</a>
+
+    <header style="margin-bottom:2.6rem;">
+      <p style="font-size:.62rem;letter-spacing:.34em;text-transform:uppercase;color:#e0723f;font-weight:600;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem;"><span style="width:9px;height:9px;border-radius:50%;background:#e0723f;animation:adRec 1.4s ease infinite;display:inline-block;"></span> Live at Adesso</p>
+      <h1 class="lv-h1" style="font-weight:400;font-size:clamp(3rem,7vw,5.5rem);line-height:.98;letter-spacing:-.03em;margin-bottom:1.2rem;">What&rsquo;s on <span style="font-style:italic;color:#b23a2e;">right now</span></h1>
+      <p style="font-size:1rem;line-height:1.7;color:rgba(26,22,17,.7);max-width:560px;">Events, updates, specials and features from 125 E Main &mdash; posted the moment they happen. This is Adesso&rsquo;s live operational state, straight from the source.</p>
+    </header>
+
+    ${tabsBar()}
+
+    <section id="sec-coming" style="margin-bottom:4rem;">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:.4rem;flex-wrap:wrap;">
+        <h2 style="font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:#b23a2e;font-weight:600;">Coming Up</h2>
+        <div style="display:flex;gap:1.2rem;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;">
+          <a href="/events.ics">Add to calendar</a><a href="/feed.xml">RSS</a>
+        </div>
+      </div>
+      <p style="font-size:.8rem;color:rgba(26,22,17,.55);margin-bottom:1.6rem;">Live music every Friday &amp; Saturday, 6&ndash;9pm. Free to attend.</p>
+      <div class="lv-events" id="events-list">${eventsHtml}</div>
+    </section>
+
+    <section id="sec-latest" style="margin-bottom:3rem;">
+      <h2 style="font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:#b23a2e;font-weight:600;margin-bottom:1.6rem;">Latest</h2>
+      ${updatesSection(posts)}
+    </section>
+
+    <footer style="padding-top:2.4rem;border-top:1px solid rgba(26,22,17,.14);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+      <p style="font-size:.72rem;color:rgba(26,22,17,.5);">Straight from the source &middot; <a href="/updates.xml">Subscribe (RSS)</a></p>
+      <div style="display:flex;gap:1.4rem;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;">
+        <a href="/" style="color:rgba(26,22,17,.6);">Back to Adesso</a>
+        <a href="https://www.instagram.com/adessocoffee/" target="_blank" rel="noopener" style="color:rgba(26,22,17,.6);">Instagram</a>
+        <a href="http://adessocoffee.square.site" target="_blank" rel="noopener" style="color:rgba(26,22,17,.6);">Order</a>
+      </div>
+    </footer>
+
+  </div>
+</main>
+</div>
+${FILTER_JS}
 </body></html>`;
 }

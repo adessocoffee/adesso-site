@@ -5,6 +5,6 @@ export async function onRequestGet({ env }) {
   let sections = [];
   try { sections = await getMenu(env); } catch (e) { sections = []; }
   return new Response(buildMenuPage(sections), {
-    headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" },
+    headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store, must-revalidate" },
   });
 }

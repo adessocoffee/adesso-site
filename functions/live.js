@@ -4,6 +4,6 @@ import { getLive, buildLivePage } from "./utils/posts.js";
 export async function onRequestGet({ env }) {
   const { events, posts } = await getLive(env);
   return new Response(buildLivePage(events, posts), {
-    headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=120" },
+    headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store, must-revalidate" },
   });
 }
