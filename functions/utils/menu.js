@@ -7,7 +7,7 @@
 const SOURCE_DEFAULT =
   "https://chowdownos.onrender.com/p/adesso-spirits-espresso/menu.json";
 
-export const SITE = "https://adesso-site.pages.dev";
+export const SITE = "https://adessospiritsandespresso.com";
 export const VENUE = { name: "Adesso Spirits + Espresso", url: SITE + "/" };
 
 const he = (s) => (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");

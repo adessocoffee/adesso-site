@@ -16,7 +16,7 @@ import json, re, datetime as dt
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-SITE_URL = "https://adesso-site.pages.dev"
+SITE_URL = "https://adessospiritsandespresso.com"
 FALLBACK_IMAGE = f"{SITE_URL}/assets/hero-poster.webp"
 MON = ['', 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 
@@ -95,7 +95,7 @@ lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Adesso Spirits + Espresso/
 for e in events:
     d = dt.date.fromisoformat(e["date"]); ds = d.strftime("%Y%m%d")
     loc = f'{V["name"]}, {V["streetAddress"]}, {V["addressLocality"]}, {V["addressRegion"]} {V["postalCode"]}'
-    lines += ["BEGIN:VEVENT", f"UID:{e['id']}@adesso-site.pages.dev", f"DTSTAMP:{dstamp}",
+    lines += ["BEGIN:VEVENT", f"UID:{e['id']}@adessospiritsandespresso.com", f"DTSTAMP:{dstamp}",
               f"DTSTART;TZID=America/New_York:{ds}T180000", f"DTEND;TZID=America/New_York:{ds}T210000",
               f"SUMMARY:{iesc(e['artist'] + ' - ' + e['genre'])}", f"LOCATION:{iesc(loc)}",
               f"DESCRIPTION:{iesc(e['description'])}", f"URL:{SITE_URL}/#events", "END:VEVENT"]

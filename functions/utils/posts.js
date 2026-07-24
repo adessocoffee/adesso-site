@@ -10,7 +10,7 @@ import { getEvents, buildListHtml } from "./events.js";
 const SOURCE_DEFAULT =
   "https://chowdownos.onrender.com/p/adesso-spirits-espresso/feed.json";
 
-export const SITE = "https://adesso-site.pages.dev";
+export const SITE = "https://adessospiritsandespresso.com";
 export const VENUE = {
   name: "Adesso Spirits + Espresso", url: SITE + "/",
   streetAddress: "125 E Main St", addressLocality: "Mason",

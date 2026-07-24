@@ -2,6 +2,6 @@ User-agent: *
 Allow: /
 
 # Machine-readable summary for AI/LLM crawlers:
-# https://adesso-site.pages.dev/llms.txt
+# https://adessospiritsandespresso.com/llms.txt
 
-Sitemap: https://adesso-site.pages.dev/sitemap.xml
+Sitemap: https://adessospiritsandespresso.com/sitemap.xml

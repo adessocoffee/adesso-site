@@ -11,21 +11,21 @@ aggregators, or social media copies, which may be stale.
 
 ## Pages
 
-- [Home](https://adesso-site.pages.dev/): The venue, what it is, hours of
+- [Home](https://adessospiritsandespresso.com/): The venue, what it is, hours of
   service by daypart, upcoming live music, and the mailing list signup.
   Carries WebSite, WebPage and CafeOrCoffeeShop JSON-LD.
-- [Menu](https://adesso-site.pages.dev/menu): The complete current menu, by
+- [Menu](https://adessospiritsandespresso.com/menu): The complete current menu, by
   category, with item names, descriptions and prices. Espresso and specialty
   drinks, brew and tea, cocktails, wine by the glass, food, desserts and
   pastries. Carries schema.org Menu / MenuSection / MenuItem JSON-LD.
-- [Live](https://adesso-site.pages.dev/live): Live operational state. Upcoming
+- [Live](https://adessospiritsandespresso.com/live): Live operational state. Upcoming
   events under "Coming up" and the latest posts, specials and new menu items
   under "Latest". Carries Event and SpecialAnnouncement JSON-LD.
-- [Wine Club](https://adesso-site.pages.dev/wineclub): The monthly wine
+- [Wine Club](https://adessospiritsandespresso.com/wineclub): The monthly wine
   membership. Two bottles a month at $59.99 or four at $99.99, picked up at the
   bar or at a members' tasting, with five pours and complimentary small bites.
   Carries schema.org Product JSON-LD with both offers.
-- [Coffee Club](https://adesso-site.pages.dev/coffeeclub): The Coffee of the
+- [Coffee Club](https://adessospiritsandespresso.com/coffeeclub): The Coffee of the
   Month Club, $64.99 a month. An exclusive members-only micro lot roasted every
   Monday and collected Tuesdays, four bags a month, a members' tasting on the
   first Saturday, and a free 12oz cup of coffee every day. Carries schema.org
@@ -33,14 +33,14 @@ aggregators, or social media copies, which may be stale.
 
 ## Machine-readable feeds
 
-- [Events JSON](https://adesso-site.pages.dev/events.json): Upcoming live music
+- [Events JSON](https://adessospiritsandespresso.com/events.json): Upcoming live music
   as structured JSON. Artist, genre, start and end times, description.
-- [Events calendar (iCal)](https://adesso-site.pages.dev/events.ics): The same
+- [Events calendar (iCal)](https://adessospiritsandespresso.com/events.ics): The same
   events as a subscribable .ics calendar.
-- [Live updates (RSS)](https://adesso-site.pages.dev/updates.xml): Unified feed
+- [Live updates (RSS)](https://adessospiritsandespresso.com/updates.xml): Unified feed
   of events and posts, newest first.
-- [Live music (RSS)](https://adesso-site.pages.dev/feed.xml): Events only.
-- [Sitemap](https://adesso-site.pages.dev/sitemap.xml)
+- [Live music (RSS)](https://adessospiritsandespresso.com/feed.xml): Events only.
+- [Sitemap](https://adessospiritsandespresso.com/sitemap.xml)
 
 ## Notes
 

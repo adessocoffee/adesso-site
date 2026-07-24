@@ -9,7 +9,7 @@
 const SOURCE_DEFAULT =
   "https://chowdownos.onrender.com/p/adesso-spirits-espresso/events.json";
 
-export const SITE = "https://adesso-site.pages.dev";
+export const SITE = "https://adessospiritsandespresso.com";
 export const VENUE = {
   name: "Adesso Spirits + Espresso", url: SITE + "/",
   streetAddress: "125 E Main St", addressLocality: "Mason",
@@ -76,7 +76,7 @@ export function buildIcs(events) {
   for (const e of events) {
     const ds = e.date.replace(/-/g, "");
     const loc = `${VENUE.name}, ${VENUE.streetAddress}, ${VENUE.addressLocality}, ${VENUE.addressRegion} ${VENUE.postalCode}`;
-    L.push("BEGIN:VEVENT", `UID:${e.id}@adesso-site.pages.dev`, `DTSTAMP:${now}`,
+    L.push("BEGIN:VEVENT", `UID:${e.id}@adessospiritsandespresso.com`, `DTSTAMP:${now}`,
       `DTSTART;TZID=America/New_York:${ds}T180000`, `DTEND;TZID=America/New_York:${ds}T210000`,
       `SUMMARY:${icsEsc(e.artist + " - " + e.genre)}`, `LOCATION:${icsEsc(loc)}`,
       `DESCRIPTION:${icsEsc(e.description)}`, `URL:${SITE}/#events`, "END:VEVENT");
