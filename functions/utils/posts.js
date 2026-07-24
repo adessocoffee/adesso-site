@@ -18,7 +18,7 @@ export const VENUE = {
 };
 const FEED_ICON = SITE + "/assets/feed-icon.png";
 const EVENT_IMAGE = SITE + "/assets/hero-poster.webp";
-const ACCENT = "b23a2e";
+const ACCENT = "ad3829";
 const MON = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
 const he = (s) => (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -56,7 +56,7 @@ function relTime(iso) {
 // --- machine-readable outputs ------------------------------------------------
 function eventLd(e) {
   return {
-    "@context": "https://schema.org", "@type": "Event",
+    "@type": "Event",
     name: `${e.artist} at ${VENUE.name}`, startDate: e.start, endDate: e.end,
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
@@ -71,7 +71,7 @@ function eventLd(e) {
 }
 function postLd(p) {
   const o = {
-    "@context": "https://schema.org", "@type": "SpecialAnnouncement",
+    "@type": "SpecialAnnouncement",
     name: p.title || "Update", text: p.text || p.title || "",
     datePosted: p.published || new Date().toISOString(),
     announcementLocation: { "@type": "LocalBusiness", name: VENUE.name, address: {
@@ -83,8 +83,36 @@ function postLd(p) {
   if (p.image) o.image = [p.image];
   return o;
 }
+// @graph: the page identity (tied to the homepage's shared @ids) followed by the
+// live operational state — every post as a SpecialAnnouncement, every upcoming
+// show as an Event.
 export const buildLiveJsonLd = (events, posts) =>
-  JSON.stringify([...posts.map(postLd), ...events.map(eventLd)], null, 2);
+  JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": SITE + "/live#webpage",
+        url: SITE + "/live",
+        name: `Live at ${VENUE.name}`,
+        description: `Live from ${VENUE.name}: upcoming events, specials, new menu items, and what's on right now.`,
+        isPartOf: { "@id": SITE + "/#website" },
+        about: { "@id": SITE + "/#business" },
+        inLanguage: "en-US",
+        breadcrumb: { "@id": SITE + "/live#breadcrumb" },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": SITE + "/live#breadcrumb",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: SITE + "/" },
+          { "@type": "ListItem", position: 2, name: "Live", item: SITE + "/live" },
+        ],
+      },
+      ...posts.map(postLd),
+      ...events.map(eventLd),
+    ],
+  }, null, 2);
 
 // One merged, date-sorted item stream for the RSS feed.
 function mergedItems(events, posts) {
@@ -136,21 +164,23 @@ const PAGE_CSS = `
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:#e7dece;color:#1a1611;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased}
-a{color:#b23a2e;text-decoration:none}a:hover{color:#8f2c22}
+a{color:#ad3829;text-decoration:none}a:hover{color:#8f2c22}
+/* inline links inside body copy must be distinguishable by more than colour (WCAG 1.4.1) */
+p a{text-decoration:underline;text-underline-offset:.18em}
 img{max-width:100%;display:block}
 /* brandmark: the wordmark is rotated AFTER layout, so the reset above would cap
    its pre-rotation width at the 88px rail and squash it. Opt it out. */
 .brandmark{max-width:none !important;width:auto !important;flex:0 0 auto}
-::selection{background:#b23a2e;color:#f2ecdf}
+::selection{background:#ad3829;color:#f2ecdf}
 @keyframes adRec{0%,100%{opacity:1}50%{opacity:.2}}
 @media(prefers-reduced-motion:reduce){[style*="adRec"]{animation:none !important}}
 #events-list{columns:2;column-gap:3.5rem}
 #events-list .event-item{display:grid;grid-template-columns:66px 1fr;gap:1.5rem;padding:1.4rem 0;border-bottom:1px solid rgba(26,22,17,.14);align-items:center;break-inside:avoid}
 #events-list .event-marker{text-align:center}
-#events-list .event-marker .em{display:block;font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:#b23a2e;margin-bottom:.15rem;font-weight:500}
+#events-list .event-marker .em{display:block;font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:#ad3829;margin-bottom:.15rem;font-weight:500}
 #events-list .event-marker .glyph{font-size:2rem;font-weight:300;line-height:1;color:#1a1611}
 #events-list .event-name{font-size:1.12rem;font-weight:500;letter-spacing:-.01em;margin-bottom:.2rem}
-#events-list .event-desc{font-size:.76rem;letter-spacing:.03em;color:rgba(26,22,17,.55);text-transform:uppercase}
+#events-list .event-desc{font-size:.76rem;letter-spacing:.03em;color:rgba(26,22,17,.66);text-transform:uppercase}
 .lv-main{margin-left:88px}
 .lv-topbar{display:none}
 .tab{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;font-family:inherit;border:1px solid rgba(26,22,17,.28);border-radius:999px;padding:.55rem 1.2rem;background:transparent;color:#1a1611;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
@@ -158,11 +188,11 @@ img{max-width:100%;display:block}
 .lv-update{border:1px solid rgba(26,22,17,.16);background:#f3ecdd;overflow:hidden;margin-bottom:1.6rem}
 .lv-update .u-img img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#ded4c2}
 .lv-update .u-body{padding:1.6rem 1.8rem}
-.lv-update time{display:flex;align-items:center;gap:.5rem;font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:#b23a2e;font-weight:600;margin-bottom:.8rem}
+.lv-update time{display:flex;align-items:center;gap:.5rem;font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:#ad3829;font-weight:600;margin-bottom:.8rem}
 .lv-update h3{font-weight:500;font-size:1.3rem;letter-spacing:-.01em;line-height:1.2;margin-bottom:.6rem}
 .lv-update p{color:rgba(26,22,17,.72);font-size:.95rem;line-height:1.7}
 .lv-update p+p{margin-top:.6rem}
-.lv-empty{border:1px solid rgba(26,22,17,.16);background:#f3ecdd;padding:2.6rem 2rem;text-align:center;font-style:italic;font-size:1.1rem;color:rgba(26,22,17,.5)}
+.lv-empty{border:1px solid rgba(26,22,17,.16);background:#f3ecdd;padding:2.6rem 2rem;text-align:center;font-style:italic;font-size:1.1rem;color:rgba(26,22,17,.66)}
 @media(max-width:820px){
   .lv-rail{display:none !important}
   .lv-main{margin-left:0 !important;padding-top:60px}
@@ -195,7 +225,7 @@ function updatesSection(posts) {
     const when = relTime(p.published);
     const meta = [when, catWord(cat)].filter(Boolean).join(" &middot; ");
     return `<article class="lv-update" data-cat="${cat}">${img}<div class="u-body">` +
-      `<time><span style="width:7px;height:7px;border-radius:50%;background:#b23a2e;display:inline-block;"></span>${he(meta)}</time>` +
+      `<time><span style="width:7px;height:7px;border-radius:50%;background:#ad3829;display:inline-block;"></span>${he(meta)}</time>` +
       `<h3>${he(p.title || "Update")}</h3>${body}</div></article>`;
   }).join("\n");
   return `<div id="updates-list">
@@ -242,9 +272,20 @@ export function buildLivePage(events, posts) {
     `<div class="lv-empty">No events on the calendar right now.</div>`;
   return `<!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Live at ${he(VENUE.name)}</title>
-<meta name="description" content="Live from ${he(VENUE.name)}: upcoming events, specials, new menu items, and what's on right now.">
+<title>Live Music &amp; What's On Now — ${he(VENUE.name)}, Mason OH</title>
+<meta name="description" content="Live from ${he(VENUE.name)}: upcoming live music, specials, new menu items, and what's on right now. 125 E Main St, Mason, OH.">
 <link rel="canonical" href="${SITE}/live">
+<meta property="og:title" content="Live at ${he(VENUE.name)}">
+<meta property="og:description" content="Upcoming live music, specials, and what's on right now in downtown Mason, Ohio.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${SITE}/live">
+<meta property="og:image" content="${SITE}/assets/hero-poster.webp">
+<meta property="og:site_name" content="${he(VENUE.name)}">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Live at ${he(VENUE.name)}">
+<meta name="twitter:description" content="Upcoming live music, specials, and what's on right now in downtown Mason, Ohio.">
+<meta name="twitter:image" content="${SITE}/assets/hero-poster.webp">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="alternate" type="application/rss+xml" title="Adesso Live" href="${SITE}/updates.xml">
@@ -279,8 +320,10 @@ export function buildLivePage(events, posts) {
     <a href="/" style="display:inline-flex;align-items:center;gap:.55rem;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;border:1px solid rgba(26,22,17,.3);border-radius:999px;padding:.72rem 1.4rem;color:#1a1611;margin-bottom:2.4rem;"><span style="font-size:1rem;line-height:1;">&larr;</span> Back to Adesso</a>
 
     <header style="margin-bottom:2.6rem;">
-      <p style="font-size:.62rem;letter-spacing:.34em;text-transform:uppercase;color:#e0723f;font-weight:600;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem;"><span style="width:9px;height:9px;border-radius:50%;background:#e0723f;animation:adRec 1.4s ease infinite;display:inline-block;"></span> Live at Adesso</p>
-      <h1 class="lv-h1" style="font-weight:400;font-size:clamp(3rem,7vw,5.5rem);line-height:.98;letter-spacing:-.03em;margin-bottom:1.2rem;">What&rsquo;s on <span style="font-style:italic;color:#b23a2e;">right now</span></h1>
+      <!-- #e0723f is the on-dark accent (rail/topbar). On the bone page background it
+           only reaches 2.36:1, so light-surface text uses the brand red. -->
+      <p style="font-size:.62rem;letter-spacing:.34em;text-transform:uppercase;color:#ad3829;font-weight:600;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem;"><span style="width:9px;height:9px;border-radius:50%;background:#ad3829;animation:adRec 1.4s ease infinite;display:inline-block;"></span> Live at Adesso</p>
+      <h1 class="lv-h1" style="font-weight:400;font-size:clamp(3rem,7vw,5.5rem);line-height:.98;letter-spacing:-.03em;margin-bottom:1.2rem;">What&rsquo;s on <span style="font-style:italic;color:#ad3829;">right now</span></h1>
       <p style="font-size:1rem;line-height:1.7;color:rgba(26,22,17,.7);max-width:560px;">Events, updates, specials and features from 125 E Main &mdash; posted the moment they happen. This is Adesso&rsquo;s live operational state, straight from the source.</p>
     </header>
 
@@ -288,26 +331,26 @@ export function buildLivePage(events, posts) {
 
     <section id="sec-coming" style="margin-bottom:4rem;">
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:.4rem;flex-wrap:wrap;">
-        <h2 style="font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:#b23a2e;font-weight:600;">Coming Up</h2>
+        <h2 style="font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:#ad3829;font-weight:600;">Coming Up</h2>
         <div style="display:flex;gap:1.2rem;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;">
           <a href="/events.ics">Add to calendar</a><a href="/feed.xml">RSS</a>
         </div>
       </div>
-      <p style="font-size:.8rem;color:rgba(26,22,17,.55);margin-bottom:1.6rem;">Live music every Friday &amp; Saturday, 6&ndash;9pm. Free to attend.</p>
+      <p style="font-size:.8rem;color:rgba(26,22,17,.66);margin-bottom:1.6rem;">Live music every Friday &amp; Saturday, 6&ndash;9pm. Free to attend.</p>
       <div class="lv-events" id="events-list">${eventsHtml}</div>
     </section>
 
     <section id="sec-latest" style="margin-bottom:3rem;">
-      <h2 style="font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:#b23a2e;font-weight:600;margin-bottom:1.6rem;">Latest</h2>
+      <h2 style="font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:#ad3829;font-weight:600;margin-bottom:1.6rem;">Latest</h2>
       ${updatesSection(posts)}
     </section>
 
     <footer style="padding-top:2.4rem;border-top:1px solid rgba(26,22,17,.14);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
-      <p style="font-size:.72rem;color:rgba(26,22,17,.5);">Straight from the source &middot; <a href="/updates.xml">Subscribe (RSS)</a></p>
+      <p style="font-size:.72rem;color:rgba(26,22,17,.66);">Straight from the source &middot; <a href="/updates.xml">Subscribe (RSS)</a></p>
       <div style="display:flex;gap:1.4rem;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;">
-        <a href="/" style="color:rgba(26,22,17,.6);">Back to Adesso</a>
-        <a href="https://www.instagram.com/adessocoffee/" target="_blank" rel="noopener" style="color:rgba(26,22,17,.6);">Instagram</a>
-        <a href="http://adessocoffee.square.site" target="_blank" rel="noopener" style="color:rgba(26,22,17,.6);">Order</a>
+        <a href="/" style="color:rgba(26,22,17,.66);">Back to Adesso</a>
+        <a href="https://www.instagram.com/adessocoffee/" target="_blank" rel="noopener" style="color:rgba(26,22,17,.66);">Instagram</a>
+        <a href="http://adessocoffee.square.site" target="_blank" rel="noopener" style="color:rgba(26,22,17,.66);">Order</a>
       </div>
     </footer>
 

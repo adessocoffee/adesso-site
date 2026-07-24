@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
+# Machine-readable summary for AI/LLM crawlers:
+# https://adesso-site.pages.dev/llms.txt
+
 Sitemap: https://adesso-site.pages.dev/sitemap.xml
