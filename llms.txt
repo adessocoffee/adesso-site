@@ -21,6 +21,15 @@ aggregators, or social media copies, which may be stale.
 - [Live](https://adesso-site.pages.dev/live): Live operational state. Upcoming
   events under "Coming up" and the latest posts, specials and new menu items
   under "Latest". Carries Event and SpecialAnnouncement JSON-LD.
+- [Wine Club](https://adesso-site.pages.dev/wineclub): The monthly wine
+  membership. Two bottles a month at $59.99 or four at $99.99, picked up at the
+  bar or at a members' tasting, with five pours and complimentary small bites.
+  Carries schema.org Product JSON-LD with both offers.
+- [Coffee Club](https://adesso-site.pages.dev/coffeeclub): The Coffee of the
+  Month Club, $64.99 a month. An exclusive members-only micro lot roasted every
+  Monday and collected Tuesdays, four bags a month, a members' tasting on the
+  first Saturday, and a free 12oz cup of coffee every day. Carries schema.org
+  Product JSON-LD.
 
 ## Machine-readable feeds
 
@@ -36,6 +45,9 @@ aggregators, or social media copies, which may be stale.
 ## Notes
 
 - Live music is every Friday and Saturday, 6 to 9pm, free to attend.
+- Both club memberships are purchased through Square; the links are on each
+  club's page. Members then join that club's group to get the month's
+  selections and tasting dates.
 - The menu, events, and posts are published from the venue's own operations
   system, so this site reflects the current state rather than a periodic export.
 - Ordering is handled offsite at http://adessocoffee.square.site
