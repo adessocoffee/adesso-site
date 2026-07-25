@@ -30,23 +30,45 @@ export async function getEvents(env) {
 }
 
 // --- derived outputs ---------------------------------------------------------
+// A music night is a MusicEvent with a performer; a wine club or a book signing
+// is a plain Event and must NOT claim a MusicGroup performed at it.
 function eventLd(e) {
-  return {
-    "@context": "https://schema.org", "@type": "Event",
-    name: `${e.artist} at ${VENUE.name}`, startDate: e.start, endDate: e.end,
+  const isMusic = (e.kind || "music") === "music";
+  const o = {
+    "@context": "https://schema.org", "@type": isMusic ? "MusicEvent" : "Event",
+    name: isMusic ? `${e.artist} at ${VENUE.name}` : `${e.name || e.artist} at ${VENUE.name}`,
+    startDate: e.start, endDate: e.end,
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: { "@type": "Place", name: VENUE.name, address: {
       "@type": "PostalAddress", streetAddress: VENUE.streetAddress,
       addressLocality: VENUE.addressLocality, addressRegion: VENUE.addressRegion,
       postalCode: VENUE.postalCode, addressCountry: VENUE.addressCountry } },
-    performer: { "@type": "MusicGroup", name: e.artist },
     organizer: { "@type": "Organization", name: VENUE.name, url: VENUE.url },
     description: e.description,
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD",
       availability: "https://schema.org/InStock", url: SITE + "/#events" },
     image: [FALLBACK_IMAGE], url: SITE + "/#events",
   };
+  if (isMusic) o.performer = { "@type": "MusicGroup", name: e.artist };
+  return o;
+}
+
+// "Carola - Latin Music" for a act, plain "Wine Club" when there's no genre.
+export const eventTitle = (e) =>
+  [e.name || e.artist, e.genre].filter(Boolean).join(" - ");
+
+// "6 to 9pm", "9 to 10:30am", "11am to 1pm" — built from the event's real times,
+// with the meridiem printed once when both ends share it.
+export function timeRange(e) {
+  // strip a bare ":00" so "6:00 PM" and "6 PM" both render as "6" — the feed has
+  // emitted both forms, and this must not depend on which side deploys first
+  const norm = (s) => (s || "").trim().toLowerCase().replace(/\s+/g, "").replace(/:00(?=[ap]m$)/, "");
+  const a = norm(e.doors), b = norm(e.ends);
+  if (!a || !b) return (e.kind || "music") === "music" ? "6 to 9pm" : "";
+  const ap = a.slice(-2), bp = b.slice(-2);
+  const av = a.slice(0, -2), bv = b.slice(0, -2);
+  return ap === bp ? `${av} to ${bv}${bp}` : `${av}${ap} to ${bv}${bp}`;
 }
 export const buildJsonLd = (events) => JSON.stringify(events.map(eventLd), null, 2);
 
@@ -57,8 +79,8 @@ export function buildListHtml(events) {
     return (
       '<div class="event-item">' +
       `<div class="event-marker"><span class="em">${MON[m]}</span><span class="glyph">${d}</span></div>` +
-      `<div><p class="event-name">${he(e.artist)}</p>` +
-      `<p class="event-desc">${e.day} &middot; ${he(e.genre)} &middot; 6 to 9pm</p></div>` +
+      `<div><p class="event-name">${he(e.name || e.artist)}</p>` +
+      `<p class="event-desc">${[e.day, he(e.genre || ""), timeRange(e)].filter(Boolean).join(" &middot; ")}</p></div>` +
       "</div>"
     );
   }).join("\n");
@@ -78,7 +100,7 @@ export function buildIcs(events) {
     const loc = `${VENUE.name}, ${VENUE.streetAddress}, ${VENUE.addressLocality}, ${VENUE.addressRegion} ${VENUE.postalCode}`;
     L.push("BEGIN:VEVENT", `UID:${e.id}@adessospiritsandespresso.com`, `DTSTAMP:${now}`,
       `DTSTART;TZID=America/New_York:${ds}T180000`, `DTEND;TZID=America/New_York:${ds}T210000`,
-      `SUMMARY:${icsEsc(e.artist + " - " + e.genre)}`, `LOCATION:${icsEsc(loc)}`,
+      `SUMMARY:${icsEsc(eventTitle(e))}`, `LOCATION:${icsEsc(loc)}`,
       `DESCRIPTION:${icsEsc(e.description)}`, `URL:${SITE}/#events`, "END:VEVENT");
   }
   L.push("END:VCALENDAR");
@@ -90,7 +112,7 @@ export function buildRss(events) {
     const [y, m, d] = e.date.split("-").map(Number);
     const pub = new Date(Date.UTC(y, m - 1, d, 22, 0)).toUTCString();
     return "    <item>\n" +
-      `      <title>${he(e.artist + " - " + e.genre)}</title>\n` +
+      `      <title>${he(eventTitle(e))}</title>\n` +
       `      <link>${SITE}/#events</link>\n` +
       `      <guid isPermaLink="false">${e.id}</guid>\n` +
       `      <pubDate>${pub}</pubDate>\n` +

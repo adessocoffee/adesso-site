@@ -56,15 +56,16 @@ function relTime(iso) {
 // --- machine-readable outputs ------------------------------------------------
 function eventLd(e) {
   return {
-    "@type": "Event",
-    name: `${e.artist} at ${VENUE.name}`, startDate: e.start, endDate: e.end,
+    "@type": (e.kind || "music") === "music" ? "MusicEvent" : "Event",
+    name: `${e.name || e.artist} at ${VENUE.name}`, startDate: e.start, endDate: e.end,
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: { "@type": "Place", name: VENUE.name, address: {
       "@type": "PostalAddress", streetAddress: VENUE.streetAddress,
       addressLocality: VENUE.addressLocality, addressRegion: VENUE.addressRegion,
       postalCode: VENUE.postalCode, addressCountry: VENUE.addressCountry } },
-    performer: { "@type": "MusicGroup", name: e.artist },
+    ...((e.kind || "music") === "music"
+      ? { performer: { "@type": "MusicGroup", name: e.artist } } : {}),
     organizer: { "@type": "Organization", name: VENUE.name, url: VENUE.url },
     description: e.description, image: [EVENT_IMAGE], url: SITE + "/#events",
   };
