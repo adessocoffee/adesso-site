@@ -227,11 +227,16 @@ function updatesSection(posts) {
     const catList = (Array.isArray(p.categories) && p.categories.length
       ? p.categories : [p.category || "update"]).map((c) => String(c).toLowerCase());
     const cat = catList.join(" ");
-    const img = p.image ? `<div class="u-img"><img src="${heAttr(p.image)}" alt="" loading="lazy"></div>` : "";
+    const img = p.image
+      ? `<div class="u-img"><img src="${heAttr(p.image)}" alt="" loading="lazy"` +
+        ` onerror="this.closest('.u-img').remove()"></div>`
+      : "";
     const body = "<p>" + he(p.text || "").replace(/\n{2,}/g, "</p><p>").replace(/\n/g, "<br>") + "</p>";
     const when = relTime(p.published);
+    // The real character, not the entity: this string goes through he() below,
+    // which would escape the & and print "&middot;" as literal text.
     const meta = [when, catList.map(catWord).filter(Boolean).join(" + ")]
-      .filter(Boolean).join(" &middot; ");
+      .filter(Boolean).join(" \u00b7 ");
     return `<article class="lv-update" data-cat="${cat}">${img}<div class="u-body">` +
       `<time><span style="width:7px;height:7px;border-radius:50%;background:#ad3829;display:inline-block;"></span>${he(meta)}</time>` +
       `<h3>${he(p.title || "Update")}</h3>${body}</div></article>`;
