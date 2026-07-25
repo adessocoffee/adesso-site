@@ -42,9 +42,17 @@ aggregators, or social media copies, which may be stale.
 - [Live music (RSS)](https://adessospiritsandespresso.com/feed.xml): Events only.
 - [Sitemap](https://adessospiritsandespresso.com/sitemap.xml)
 
+## Hours
+
+- Monday 7am to 3pm
+- Tuesday, Wednesday, Thursday 7am to 5pm
+- Friday and Saturday 7am to 9pm
+- Sunday 9am to 2pm
+
 ## Notes
 
 - Live music is every Friday and Saturday, 6 to 9pm, free to attend.
+- Happy hour is Friday 4 to 7pm.
 - Both club memberships are purchased through Square; the links are on each
   club's page. Members then join that club's group to get the month's
   selections and tasting dates.
