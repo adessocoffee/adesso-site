@@ -148,6 +148,20 @@ function eventLine(e) {
   return bits.join(" \u2014 ");
 }
 
+// What a post should read as on the board.
+//
+// `title` is the feed's list heading and is derived from the FIRST SENTENCE of
+// the post — so "We have food tonight! Select the event to see the menu" gets a
+// title of "We have food tonight!" and the instruction is lost. On a one-line
+// board the whole sentence is the message, so prefer the body when it fits.
+// Long automation captions do not fit, and for those the short title is exactly
+// right, which is why this falls back rather than always using the body.
+function boardLine(p) {
+  const body = String(p.text || "").trim().replace(/\s+/g, " ");
+  if (body && body.length <= 80) return body;
+  return clip(p.title || body, 80);
+}
+
 function buildOnAir(events, posts) {
   const out = { now: null, tonight: null, special: null };
   const nowV = venueNow();
@@ -178,7 +192,7 @@ function buildOnAir(events, posts) {
   // dropped anything expired, so no date arithmetic is needed here.
   const sp = list.find((p) => catsOf(p).includes("special"));
   if (sp) {
-    out.special = { label: "Special", text: clip(sp.title || sp.text, 80) };
+    out.special = { label: "Special", text: boardLine(sp) };
     used.add(sp.id);
   } else {
     const inWindow = nowV.dow === HAPPY_HOUR.dow
@@ -191,7 +205,7 @@ function buildOnAir(events, posts) {
   // ---- NOW -----------------------------------------------------------------
   const upd = list.find((p) => catsOf(p).includes("update") && !used.has(p.id));
   if (upd) {
-    out.now = { label: "Now", text: clip(upd.title || upd.text, 80) };
+    out.now = { label: "Now", text: boardLine(upd) };
     used.add(upd.id);
   } else {
     const h = HOURS[nowV.dow];
