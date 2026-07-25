@@ -30,6 +30,25 @@ export async function getEvents(env) {
 }
 
 // --- derived outputs ---------------------------------------------------------
+// Each event gets its OWN url. Previously every event pointed at /#events, so 22
+// events all claimed one page — bad for a reader and worse for structured data,
+// which wants one canonical URL per Event.
+export const eventUrl = (e) => `${SITE}/live/${e.id}`;
+
+// A one-line teaser for the card. The full menu lives on the event page; this
+// is only here so someone scrolling knows there IS food without clicking.
+export function foodTeaser(e, max = 78) {
+  // food is authored one dish per line; the teaser is a single line, so the
+  // line breaks have to become separators or the dishes run together
+  const f = (e.food || "").trim().split(/\s*(?:\r?\n|;|\u2022|\|)\s*/)
+    .map((x) => x.replace(/^[-–—*]\s*/, "").trim()).filter(Boolean).join(", ");
+  if (!f) return "";
+  if (f.length <= max) return f;
+  const cut = f.slice(0, max);
+  const at = Math.max(cut.lastIndexOf(","), cut.lastIndexOf(" "));
+  return (at > 40 ? cut.slice(0, at) : cut).replace(/[,\s]+$/, "") + "\u2026";
+}
+
 // A music night is a MusicEvent with a performer; a wine club or a book signing
 // is a plain Event and must NOT claim a MusicGroup performed at it.
 function eventLd(e) {
@@ -47,8 +66,8 @@ function eventLd(e) {
     organizer: { "@type": "Organization", name: VENUE.name, url: VENUE.url },
     description: e.description,
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD",
-      availability: "https://schema.org/InStock", url: SITE + "/#events" },
-    image: [FALLBACK_IMAGE], url: SITE + "/#events",
+      availability: "https://schema.org/InStock", url: eventUrl(e) },
+    image: [FALLBACK_IMAGE], url: eventUrl(e),
   };
   if (isMusic) o.performer = { "@type": "MusicGroup", name: e.artist };
   return o;
@@ -77,11 +96,12 @@ export function buildListHtml(events) {
   return events.map((e) => {
     const [, m, d] = e.date.split("-").map(Number);
     return (
-      '<div class="event-item">' +
+      `<a class="event-item" href="${eventUrl(e)}">` +
       `<div class="event-marker"><span class="em">${MON[m]}</span><span class="glyph">${d}</span></div>` +
       `<div><p class="event-name">${he(e.name || e.artist)}</p>` +
-      `<p class="event-desc">${[e.day, he(e.genre || ""), timeRange(e)].filter(Boolean).join(" &middot; ")}</p></div>` +
-      "</div>"
+      `<p class="event-desc">${[e.day, he(e.genre || ""), timeRange(e)].filter(Boolean).join(" &middot; ")}</p>` +
+      (foodTeaser(e) ? `<p class="event-food">Food: ${he(foodTeaser(e))}</p>` : "") +
+      "</div></a>"
     );
   }).join("\n");
 }
@@ -101,7 +121,7 @@ export function buildIcs(events) {
     L.push("BEGIN:VEVENT", `UID:${e.id}@adessospiritsandespresso.com`, `DTSTAMP:${now}`,
       `DTSTART;TZID=America/New_York:${ds}T180000`, `DTEND;TZID=America/New_York:${ds}T210000`,
       `SUMMARY:${icsEsc(eventTitle(e))}`, `LOCATION:${icsEsc(loc)}`,
-      `DESCRIPTION:${icsEsc(e.description)}`, `URL:${SITE}/#events`, "END:VEVENT");
+      `DESCRIPTION:${icsEsc(e.description)}`, `URL:${eventUrl(e)}`, "END:VEVENT");
   }
   L.push("END:VCALENDAR");
   return L.join("\r\n") + "\r\n";

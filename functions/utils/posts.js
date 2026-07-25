@@ -161,7 +161,7 @@ export function buildUpdatesRss(events, posts) {
 }
 
 // --- human-readable /live page (redesign: 70s vintage bone + brand red) ------
-const PAGE_CSS = `
+export const PAGE_CSS = `
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:#e7dece;color:#1a1611;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased}
@@ -182,6 +182,9 @@ img{max-width:100%;display:block}
 #events-list .event-marker .glyph{font-size:2rem;font-weight:300;line-height:1;color:#1a1611}
 #events-list .event-name{font-size:1.12rem;font-weight:500;letter-spacing:-.01em;margin-bottom:.2rem}
 #events-list .event-desc{font-size:.76rem;letter-spacing:.03em;color:rgba(26,22,17,.66);text-transform:uppercase}
+.event-food{font-size:.78rem;letter-spacing:.02em;color:#e0723f;margin-top:.3rem;}
+a.event-item{text-decoration:none;color:inherit;display:flex;transition:opacity .2s;}
+a.event-item:hover{opacity:.72;}
 .lv-main{margin-left:88px}
 .lv-topbar{display:none}
 .tab{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;font-family:inherit;border:1px solid rgba(26,22,17,.28);border-radius:999px;padding:.55rem 1.2rem;background:transparent;color:#1a1611;cursor:pointer;transition:background .2s,color .2s,border-color .2s}

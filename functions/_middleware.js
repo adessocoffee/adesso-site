@@ -1,4 +1,4 @@
-import { getEvents, buildJsonLd, buildListHtml } from "./utils/events.js";
+import { getEvents, buildJsonLd, buildListHtml, eventUrl } from "./utils/events.js";
 import { getPosts } from "./utils/posts.js";
 // Inject live data into the homepage at the edge:
 //   - the events JSON-LD + the events list (#events-jsonld / #events-list)
@@ -31,7 +31,7 @@ export async function onRequest(context) {
   for (const key of ["now", "tonight", "special"]) {
     const v = onair[key];
     if (!v || !v.text) continue;
-    rw = rw.on(`#los-${key}`, slot(v.text));
+    rw = rw.on(`#los-${key}`, slot(v.text, v.href));
     if (v.label) rw = rw.on(`#los-${key}-label`, label(v.label));
   }
 
@@ -43,14 +43,26 @@ export async function onRequest(context) {
 
 // A slot handler: replace inner text (escaped) and lift the italic muted
 // placeholder color to the live cream so a filled slot reads as real.
-function slot(text) {
+function slot(text, href) {
   return {
     element(el) {
-      el.setInnerContent(text, { html: false });
+      if (href) {
+        // The board is the fastest path to the detail, so the event slot is a
+        // link. The arrow is the only affordance that survives on a board with
+        // no chrome, and it is what tells someone the line is tappable.
+        el.setInnerContent(
+          `<a href="${href}" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(239,231,214,.34);padding-bottom:1px;">` +
+          `${esc(text)} <span aria-hidden="true" style="opacity:.65">&rsaquo;</span></a>`,
+          { html: true });
+      } else {
+        el.setInnerContent(text, { html: false });
+      }
       el.setAttribute("style", "font-size:.9rem;color:#efe7d6;font-style:normal;");
     },
   };
 }
+
+const esc = (s) => String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 // The What's On label changes with the day ("This Morning" / "Tonight"), so the
 // caption is data too, not just the line under it.
@@ -155,10 +167,10 @@ function buildOnAir(events, posts) {
   if (ev) {
     const h = startHour(ev);
     const lab = h < 12 ? "This Morning" : h < 17 ? "This Afternoon" : "Tonight";
-    out.tonight = { label: lab, text: clip(eventLine(ev), 80) };
+    out.tonight = { label: lab, text: clip(eventLine(ev), 80), href: eventUrl(ev) };
   } else {
     const next = (events || []).find((e) => e.date > nowV.date);
-    if (next) out.tonight = { label: "Next Up", text: clip(`${next.day} \u2014 ${eventLine(next)}`, 80) };
+    if (next) out.tonight = { label: "Next Up", text: clip(`${next.day} \u2014 ${eventLine(next)}`, 80), href: eventUrl(next) };
   }
 
   // ---- SPECIAL -------------------------------------------------------------
