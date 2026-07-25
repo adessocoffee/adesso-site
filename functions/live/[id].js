@@ -143,37 +143,37 @@ function buildEventPage(e, others) {
 /* This page lives on the same bone ground as /live. #e0723f is the on-dark
    accent used by the rail; on bone it only reaches 2.36:1, so text on this
    surface uses the brand red, matching the rule already set in posts.js. */
-.ev-wrap{max-width:820px;margin:0 auto;padding:5rem 3rem 6rem;}
+.ev-wrap{max-width:820px;margin:0 auto;padding:5rem 3rem 6rem;font-weight:400;}
 .ev-back{display:inline-flex;align-items:center;gap:.55rem;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;border:1px solid rgba(26,22,17,.3);border-radius:999px;padding:.72rem 1.4rem;color:#1a1611;margin-bottom:2.6rem;}
 .ev-back:hover{border-color:#ad3829;color:#ad3829;}
 .ev-kicker{font-size:.62rem;letter-spacing:.34em;text-transform:uppercase;color:#ad3829;font-weight:600;margin-bottom:1.1rem;}
 .ev-h1{font-weight:400;font-size:clamp(2.6rem,6.5vw,4.6rem);line-height:1;letter-spacing:-.03em;margin-bottom:.8rem;color:#1a1611;}
-.ev-when{font-size:1rem;letter-spacing:.02em;color:rgba(26,22,17,.7);margin-bottom:.4rem;}
+.ev-when{font-size:1rem;letter-spacing:.02em;color:rgba(18,16,12,.8);font-weight:400;margin-bottom:.4rem;}
 .ev-block{border-top:1px solid rgba(26,22,17,.16);padding-top:1.7rem;margin-top:2.8rem;}
-.ev-lab{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:#ad3829;font-weight:600;margin-bottom:1.1rem;}
-.ev-about{font-size:1.06rem;line-height:1.7;color:rgba(26,22,17,.82);max-width:620px;}
+.ev-lab{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:#9c3024;font-weight:600;margin-bottom:1.1rem;}
+.ev-about{font-size:1.06rem;line-height:1.7;color:#12100c;font-weight:400;max-width:620px;}
 .ev-food{list-style:none;padding:0;margin:0;max-width:620px;}
-.ev-food li{font-size:1.1rem;line-height:1.5;padding:.8rem 0 .8rem 1.5rem;border-bottom:1px solid rgba(26,22,17,.1);position:relative;color:#1a1611;}
+.ev-food li{font-size:1.1rem;line-height:1.5;padding:.8rem 0 .8rem 1.5rem;border-bottom:1px solid rgba(26,22,17,.12);position:relative;color:#12100c;font-weight:400;}
 .ev-food li:before{content:"";position:absolute;left:0;top:1.35rem;width:7px;height:7px;background:#ad3829;border-radius:50%;}
 .ev-food li:last-child{border-bottom:0;}
-.ev-more a{display:flex;justify-content:space-between;gap:1rem;padding:.9rem 0;border-bottom:1px solid rgba(26,22,17,.1);color:#1a1611;font-size:.98rem;}
+.ev-more a{display:flex;justify-content:space-between;gap:1rem;padding:.9rem 0;border-bottom:1px solid rgba(26,22,17,.12);color:#12100c;font-weight:400;font-size:.98rem;}
 .ev-more a:hover{color:#ad3829;}
-.ev-more a span{color:rgba(26,22,17,.5);white-space:nowrap;font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;}
+.ev-more a span{color:rgba(18,16,12,.66);white-space:nowrap;font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;}
 /* long-form: a full tasting menu has to read like a menu, not a blog post.
    Pour headings get the rule; "Paired With" / "Why It Works" sit tighter to the
    text they belong to; the measure stays ~62ch so it is actually readable. */
 .ev-longform{max-width:660px;}
-.ev-longform .ev-p{font-size:1.02rem;line-height:1.72;color:rgba(26,22,17,.82);margin:0 0 1.15rem;}
+.ev-longform .ev-p{font-size:1.04rem;line-height:1.72;color:#12100c;font-weight:400;margin:0 0 1.15rem;}
 .ev-longform .ev-p:last-child{margin-bottom:0;}
 .ev-h1{margin-top:2.4rem;}
 .ev-longform h2.ev-h1{font-size:1.7rem;font-weight:400;letter-spacing:-.015em;line-height:1.2;color:#1a1611;margin:2.6rem 0 .5rem;}
-.ev-longform h3.ev-h2{font-size:1.24rem;font-weight:400;font-style:italic;letter-spacing:-.01em;color:rgba(26,22,17,.9);margin:.2rem 0 1.3rem;}
+.ev-longform h3.ev-h2{font-size:1.24rem;font-weight:400;font-style:italic;letter-spacing:-.01em;color:#12100c;margin:.2rem 0 1.3rem;}
 .ev-longform h4.ev-h3{font-size:.64rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:#ad3829;margin:2.6rem 0 .7rem;padding-top:1.5rem;border-top:1px solid rgba(26,22,17,.14);}
-.ev-longform h4.ev-h4{font-size:.62rem;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:rgba(26,22,17,.55);margin:1.6rem 0 .5rem;}
-.ev-longform .ev-quote{margin:1.6rem 0 1.9rem;padding:0 0 0 1.3rem;border-left:2px solid #ad3829;font-size:1.12rem;line-height:1.6;font-style:italic;color:rgba(26,22,17,.86);}
+.ev-longform h4.ev-h4{font-size:.62rem;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:rgba(18,16,12,.7);margin:1.6rem 0 .5rem;}
+.ev-longform .ev-quote{margin:1.6rem 0 1.9rem;padding:0 0 0 1.3rem;border-left:2px solid #ad3829;font-size:1.12rem;line-height:1.6;font-style:italic;color:#12100c;}
 .ev-longform .ev-hr{border:0;border-top:1px solid rgba(26,22,17,.14);margin:2.4rem 0;}
 .ev-longform .ev-ul{list-style:none;padding:0;margin:0 0 1.3rem;}
-.ev-longform .ev-ul li{position:relative;padding:.3rem 0 .3rem 1.1rem;font-size:1.02rem;line-height:1.6;color:rgba(26,22,17,.82);}
+.ev-longform .ev-ul li{position:relative;padding:.3rem 0 .3rem 1.1rem;font-size:1.04rem;line-height:1.6;color:#12100c;font-weight:400;}
 .ev-longform .ev-ul li:before{content:"";position:absolute;left:0;top:.95rem;width:5px;height:5px;background:#ad3829;border-radius:50%;}
 .ev-longform strong{font-weight:600;color:#1a1611;}\n.ev-longform a{color:#ad3829;border-bottom:1px solid rgba(173,56,41,.4);}\n.ev-longform a:hover{color:#8f2c22;border-bottom-color:#8f2c22;}
 .ev-longform em{font-style:italic;}
