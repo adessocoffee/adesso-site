@@ -220,11 +220,15 @@ function updatesSection(posts) {
     </div>`;
   }
   const cards = posts.map((p) => {
-    const cat = (p.category || "update").toLowerCase();
+    // a post can sit under more than one pill; data-cat holds the whole set
+    const catList = (Array.isArray(p.categories) && p.categories.length
+      ? p.categories : [p.category || "update"]).map((c) => String(c).toLowerCase());
+    const cat = catList.join(" ");
     const img = p.image ? `<div class="u-img"><img src="${heAttr(p.image)}" alt="" loading="lazy"></div>` : "";
     const body = "<p>" + he(p.text || "").replace(/\n{2,}/g, "</p><p>").replace(/\n/g, "<br>") + "</p>";
     const when = relTime(p.published);
-    const meta = [when, catWord(cat)].filter(Boolean).join(" &middot; ");
+    const meta = [when, catList.map(catWord).filter(Boolean).join(" + ")]
+      .filter(Boolean).join(" &middot; ");
     return `<article class="lv-update" data-cat="${cat}">${img}<div class="u-body">` +
       `<time><span style="width:7px;height:7px;border-radius:50%;background:#ad3829;display:inline-block;"></span>${he(meta)}</time>` +
       `<h3>${he(p.title || "Update")}</h3>${body}</div></article>`;
@@ -257,7 +261,8 @@ const FILTER_JS = `<script>(function(){
     if(latest)latest.style.display=showLatest?'':'none';
     var want=CATMAP[f]||null,vis=0;
     [].forEach.call(document.querySelectorAll('.lv-update'),function(el){
-      var show=(!want||el.getAttribute('data-cat')===want);el.style.display=show?'':'none';if(show)vis++;
+      var have=(el.getAttribute('data-cat')||'').split(' ');
+      var show=(!want||have.indexOf(want)!==-1);el.style.display=show?'':'none';if(show)vis++;
     });
     if(empty){var word=(f==='specials')?'specials':(f==='features')?'features':'updates';
       empty.textContent='No '+word+' yet. New '+word+' stream in here.';
